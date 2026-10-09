@@ -1,0 +1,30 @@
+Package: ordenamiento
+Title: Registro Trienal Uniandes (Docencia, Investigación, Servicio)
+Version: 0.1.0
+Authors@R: person(
+    "C.", "Canizares",
+    email = "c.canizares54@uniandes.edu.co",
+    role = c("aut", "cre")
+  )
+Description: Paquete con una app Shiny para registrar actividades del
+    informe trienal. Crea una sola vez la carpeta de trabajo en el
+    computador y, en cada ejecución, abre la app y actualiza esa carpeta.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Language: es
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.2
+Depends:
+    R (>= 4.1.0)
+Imports:
+    shiny,
+    bslib,
+    DT,
+    readr,
+    dplyr,
+    stringr,
+    fs,
+    tools,
+    utils
+Suggests:
+    pkgload

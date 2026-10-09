@@ -1,0 +1,30 @@
+# R / RStudio
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+*.Rproj
+
+# Build
+src/*.o
+src/*.so
+src/*.dll
+*.tar.gz
+*.Rcheck/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Nunca subir datos personales de usuarios
+datos/
+evidencias/
+registro/
+informe-trienal/
+*.csv
+*.pdf
+*.docx
+*.xlsx
+
+# Logs locales
+tools/*.log

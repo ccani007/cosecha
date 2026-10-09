@@ -1,0 +1,13 @@
+^.*\.Rproj$
+^\.Rproj\.user$
+^\.git$
+^\.gitignore$
+^README\.md$
+^LICENSE\.md$
+^tools$
+^app$
+^lanzar_app\.R$
+^datos$
+^evidencias$
+^registro$
+^informe-trienal$
