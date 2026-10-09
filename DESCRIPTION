@@ -2,7 +2,7 @@ Package: cosecha
 Title: Cosecha — Registro del Informe Trienal Uniandes
 Version: 0.1.0
 Authors@R: person(
-    "C.", "Canizares",
+    "Catalina", "Canizares",
     email = "c.canizares54@uniandes.edu.co",
     role = c("aut", "cre")
   )
