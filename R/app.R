@@ -22,13 +22,10 @@
 :root {
   --cosecha-ink: #292524;
   --cosecha-tierra: #9a3412;
-  --cosecha-crema: #fff8f1;
+  --cosecha-crema: #ffffff;
 }
 body {
-  background:
-    radial-gradient(1100px 420px at 100% -10%, rgba(245, 193, 108, 0.45), transparent 55%),
-    radial-gradient(800px 380px at -10% 0%, rgba(154, 52, 18, 0.08), transparent 50%),
-    var(--cosecha-crema) !important;
+  background: #ffffff !important;
   color: var(--cosecha-ink);
 }
 .navbar {
@@ -72,16 +69,44 @@ body {
   box-shadow: 0 0 0 0.2rem rgba(194, 65, 12, 0.15) !important;
 }
 .btn-guardar {
-  background: #9a3412 !important;
-  border: none !important;
+  background: #3f6212 !important;
+  border: 1px solid #3f6212 !important;
   color: #fff !important;
   font-weight: 700 !important;
   padding: 0.72rem 1rem !important;
   border-radius: 999px !important;
-  box-shadow: 0 8px 20px rgba(154, 52, 18, 0.22);
+  box-shadow: none !important;
 }
-.btn-guardar:hover { background: #7c2d12 !important; color: #fff !important; }
-.btn-suave { border-radius: 999px !important; }
+.btn-guardar:hover, .btn-guardar:focus {
+  background: #365314 !important;
+  border-color: #365314 !important;
+  color: #fff !important;
+}
+.btn-suave, a.btn-suave {
+  background: #fff !important;
+  color: #44403c !important;
+  border: 1px solid #d6d3d1 !important;
+  border-radius: 999px !important;
+  font-weight: 600 !important;
+  box-shadow: none !important;
+}
+.btn-suave:hover, .btn-suave:focus, a.btn-suave:hover, a.btn-suave:focus {
+  background: #fff7ed !important;
+  border-color: #fdba74 !important;
+  color: #9a3412 !important;
+}
+.btn-peligro {
+  background: #fff !important;
+  color: #9f1239 !important;
+  border: 1px solid #fecdd3 !important;
+  border-radius: 999px !important;
+  font-weight: 600 !important;
+}
+.btn-peligro:hover, .btn-peligro:focus {
+  background: #fff1f2 !important;
+  border-color: #fda4af !important;
+  color: #9f1239 !important;
+}
 .ruta-fija {
   margin-top: 0.3rem;
   padding: 0.85rem 0.9rem;
@@ -353,6 +378,11 @@ tabla_visible <- function(df) {
   )
 }
 
+texto_celda <- function(x) {
+  x <- x %||% ""
+  as.character(x)[[1]]
+}
+
 saludo_vacio <- function() {
   saludos <- c(
     "\U0001f331 Todav\u00eda no hay nada, y est\u00e1 bien. La primera actividad es la que m\u00e1s cuesta.",
@@ -376,6 +406,16 @@ caja_sector <- function(titulo, output_id, emoji, bg, fg) {
   )
 }
 
+aviso_elegir_carpeta <- function() {
+  if (identical(Sys.info()[["sysname"]], "Darwin")) {
+    "Elige la carpeta en la ventana del Finder. Si no la ves, haz clic en Finder en el Dock."
+  } else if (.Platform$OS.type == "windows") {
+    "Elige la carpeta en la ventana de Windows. Si no la ves, m\u00edrala en la barra de tareas."
+  } else {
+    "Elige la carpeta en la ventana que se abri\u00f3."
+  }
+}
+
 #' Objeto Shiny de la app de registro
 #'
 #' @param root_dir Carpeta de datos. Por defecto [ensure_data_dir()].
@@ -391,7 +431,7 @@ cosecha_app <- function(root_dir = NULL) {
   theme <- bslib::bs_theme(
     version = 5,
     bootswatch = "litera",
-    bg = "#FFF8F1",
+    bg = "#FFFFFF",
     fg = "#292524",
     primary = "#9A3412",
     secondary = "#57534E",
@@ -423,7 +463,7 @@ cosecha_app <- function(root_dir = NULL) {
         ),
         shiny::actionButton(
           "elegir_ruta", "\U0001f4c2 Elegir carpeta",
-          class = "btn-outline-secondary btn-suave w-100"
+          class = "btn-suave w-100"
         ),
         shiny::actionButton(
           "usar_ruta", "Usar esta carpeta",
@@ -434,11 +474,7 @@ cosecha_app <- function(root_dir = NULL) {
           "Esa carpeta queda con docencia, investigaci\u00f3n, servicio y las evidencias. Si ya ten\u00eda actividades, no se borran."
         )
       ),
-      shiny::tags$div(
-        class = "lado-intro",
-        shiny::tags$h2("Nueva actividad"),
-        shiny::tags$p("Docencia, investigaci\u00f3n o servicio. Queda en la carpeta que elegiste, en tu computador.")
-      ),
+      shiny::uiOutput("intro_form"),
       shiny::selectInput("rama", "Sector", choices = c(
         "\U0001f4da Docencia" = "docencia",
         "\U0001f52c Investigaci\u00f3n" = "investigacion",
@@ -467,12 +503,9 @@ cosecha_app <- function(root_dir = NULL) {
       ),
       shiny::uiOutput("archivo_ui"),
       shiny::textInput("evidencia_url", "O un enlace", placeholder = "https://doi.org/\u2026"),
+      shiny::uiOutput("nota_evidencia"),
       shiny::actionButton("guardar", "Guardar actividad \U0001f389", class = "btn-guardar w-100"),
-      shiny::div(
-        class = "d-flex gap-2 mt-2",
-        shiny::actionButton("sync_md", "\U0001f4dd Vistas", class = "btn-outline-secondary btn-suave flex-fill"),
-        shiny::actionButton("abrir", "\U0001f4c2 Carpeta", class = "btn-outline-secondary btn-suave flex-fill")
-      )
+      shiny::uiOutput("cancelar_edicion_ui")
     ),
     shiny::tags$script(shiny::HTML(.cosecha_js)),
     shiny::tags$div(
@@ -504,12 +537,17 @@ cosecha_app <- function(root_dir = NULL) {
             )
           )
         ),
-        DT::DTOutput("tabla"),
         shiny::div(
-          class = "d-flex gap-2 mt-3 flex-wrap",
-          shiny::actionButton("eliminar", "Quitar seleccionada", class = "btn-outline-danger btn-suave"),
+          class = "d-flex gap-2 flex-wrap mb-2",
+          shiny::actionButton("editar", "Editar seleccionada", class = "btn-suave"),
+          shiny::actionButton("eliminar", "Quitar seleccionada", class = "btn-suave btn-peligro"),
           shiny::downloadButton("descargar_csv", "Descargar CSV", class = "btn-suave")
         ),
+        shiny::tags$p(
+          class = "ruta-nota mb-3",
+          "Elige una fila para editarla o quitarla."
+        ),
+        DT::DTOutput("tabla"),
         shiny::tags$p(
           class = "ruta-nota mt-3 mb-0",
           paste0("Cosecha ", version, " \u00b7 el registro vive en datos/actividades.csv")
@@ -524,6 +562,43 @@ cosecha_app <- function(root_dir = NULL) {
     celebra <- shiny::reactiveVal(NULL)
     pendiente_borrar <- shiny::reactiveVal(NULL)
     archivo_token <- shiny::reactiveVal(0L)
+    editando <- shiny::reactiveVal(NULL)
+
+    salir_de_edicion <- function(reset_fecha = FALSE) {
+      editando(NULL)
+      shiny::updateTextAreaInput(session, "actividad", value = "")
+      shiny::updateTextInput(session, "rol", value = "")
+      shiny::updateTextAreaInput(session, "para_informe", value = "")
+      shiny::updateTextAreaInput(session, "notas", value = "")
+      shiny::updateTextInput(session, "evidencia_url", value = "")
+      shiny::updateSelectInput(session, "estado", selected = "")
+      if (isTRUE(reset_fecha)) {
+        shiny::updateDateInput(session, "fecha", value = Sys.Date())
+      }
+      archivo_token(archivo_token() + 1L)
+    }
+
+    cargar_en_formulario <- function(row) {
+      editando(texto_celda(row$id))
+      shiny::updateSelectInput(session, "rama", selected = texto_celda(row$rama))
+      fecha <- as.Date(texto_celda(row$fecha))
+      if (is.na(fecha)) fecha <- Sys.Date()
+      shiny::updateDateInput(session, "fecha", value = fecha)
+      shiny::updateTextAreaInput(session, "actividad", value = texto_celda(row$actividad))
+      shiny::updateTextInput(session, "rol", value = texto_celda(row$rol_alcance))
+      estado <- texto_celda(row$estado)
+      if (!estado %in% .cosecha_estados) estado <- ""
+      shiny::updateSelectInput(session, "estado", selected = estado)
+      shiny::updateTextAreaInput(session, "para_informe", value = texto_celda(row$para_informe))
+      shiny::updateTextAreaInput(session, "notas", value = texto_celda(row$notas))
+      ev <- texto_celda(row$evidencia)
+      shiny::updateTextInput(
+        session,
+        "evidencia_url",
+        value = if (grepl("^https?://", ev)) ev else ""
+      )
+      archivo_token(archivo_token() + 1L)
+    }
 
     aplicar_carpeta <- function(path) {
       path <- trimws(path %||% "")
@@ -540,6 +615,7 @@ cosecha_app <- function(root_dir = NULL) {
       df <- leer_actividades(info$path)
       datos(df)
       sincronizar_markdown(df, info$path)
+      salir_de_edicion(reset_fecha = TRUE)
       shiny::updateTextInput(session, "ruta_texto", value = info$path)
       n <- nrow(df)
       if (isTRUE(info$ya_existia)) {
@@ -565,12 +641,18 @@ cosecha_app <- function(root_dir = NULL) {
 
     shiny::observeEvent(input$elegir_ruta, {
       shiny::showNotification(
-        "Elige la carpeta en la ventana de Windows. Si no la ves, m\u00edrala en la barra de tareas.",
+        aviso_elegir_carpeta(),
         type = "message",
         duration = 8,
         id = "eligiendo"
       )
-      elegido <- elegir_carpeta_dialogo(carpeta())
+      elegido <- tryCatch(
+        elegir_carpeta_dialogo(carpeta()),
+        error = function(e) {
+          shiny::showNotification(conditionMessage(e), type = "error", duration = 12)
+          NULL
+        }
+      )
       shiny::removeNotification(id = "eligiendo")
       if (is.null(elegido)) return()
       aplicar_carpeta(elegido)
@@ -587,6 +669,65 @@ cosecha_app <- function(root_dir = NULL) {
     output$archivo_ui <- shiny::renderUI({
       archivo_token()
       shiny::fileInput("archivo", "\U0001f4ce Evidencia (opcional)", multiple = FALSE)
+    })
+
+    output$intro_form <- shiny::renderUI({
+      id <- editando()
+      if (is.null(id)) {
+        shiny::tags$div(
+          class = "lado-intro",
+          shiny::tags$h2("Nueva actividad"),
+          shiny::tags$p("Docencia, investigaci\u00f3n o servicio. Queda en la carpeta que elegiste, en tu computador.")
+        )
+      } else {
+        shiny::tags$div(
+          class = "lado-intro",
+          shiny::tags$h2("Editar actividad"),
+          shiny::tags$p(paste0(
+            "Est\u00e1s editando ", id,
+            ". El identificador se queda. Pulsa Guardar cambios cuando termines."
+          ))
+        )
+      }
+    })
+
+    output$nota_evidencia <- shiny::renderUI({
+      id <- editando()
+      if (is.null(id)) return(NULL)
+      df <- datos()
+      i <- which(df$id == id)
+      if (!length(i)) return(NULL)
+      ev <- texto_celda(df$evidencia[i[[1]]])
+      if (!nzchar(ev) || grepl("^https?://", ev)) return(NULL)
+      shiny::tags$p(
+        class = "ruta-nota",
+        paste0(
+          "Evidencia actual: ", ev,
+          ". Si no subes otra ni pegas un enlace, se conserva. El archivo viejo no se borra."
+        )
+      )
+    })
+
+    output$cancelar_edicion_ui <- shiny::renderUI({
+      if (is.null(editando())) return(NULL)
+      shiny::actionButton(
+        "cancelar_edicion",
+        "Cancelar edici\u00f3n",
+        class = "btn-suave w-100 mt-2"
+      )
+    })
+
+    shiny::observe({
+      id <- editando()
+      shiny::updateActionButton(
+        session,
+        "guardar",
+        label = if (is.null(id)) {
+          "Guardar actividad \U0001f389"
+        } else {
+          "Guardar cambios"
+        }
+      )
     })
 
     contar <- function(rama) {
@@ -672,10 +813,24 @@ cosecha_app <- function(root_dir = NULL) {
       }
 
       df <- datos()
+      id_edit <- editando()
+      es_edicion <- !is.null(id_edit)
+      if (es_edicion && !isTRUE(any(df$id == id_edit, na.rm = TRUE))) {
+        editando(NULL)
+        shiny::showNotification(
+          "Esa actividad ya no est\u00e1 en la carpeta.",
+          type = "warning"
+        )
+        return()
+      }
+
       rama <- input$rama
-      id <- siguiente_id(df, rama)
-      fecha <- as.character(input$fecha)
-      evidencia_nombre <- ""
+      id <- if (es_edicion) id_edit else siguiente_id(df, rama)
+      fecha <- as.character(input$fecha %||% Sys.Date())
+      estado <- if (identical(rama, "investigacion")) texto_celda(input$estado) else ""
+      prev <- if (es_edicion) texto_celda(df$evidencia[which(df$id == id)[[1]]]) else ""
+      url <- trimws(input$evidencia_url %||% "")
+      evidencia_nombre <- prev
 
       if (!is.null(input$archivo) && nzchar(input$archivo$datapath %||% "")) {
         ext <- tools::file_ext(input$archivo$name)
@@ -694,48 +849,93 @@ cosecha_app <- function(root_dir = NULL) {
           )
           return()
         }
-      } else if (nzchar(trimws(input$evidencia_url %||% ""))) {
-        evidencia_nombre <- trimws(input$evidencia_url)
+      } else if (nzchar(url)) {
+        evidencia_nombre <- url
+      } else if (grepl("^https?://", prev)) {
+        evidencia_nombre <- ""
       }
 
-      nueva <- data.frame(
-        id = id,
-        rama = rama,
-        fecha = fecha,
-        actividad = act,
-        rol_alcance = trimws(input$rol %||% ""),
-        estado = if (identical(rama, "investigacion")) input$estado %||% "" else "",
-        evidencia = evidencia_nombre,
-        para_informe = trimws(input$para_informe %||% ""),
-        notas = trimws(input$notas %||% ""),
-        creado_en = format(Sys.time(), "%Y-%m-%dT%H:%M:%S"),
-        stringsAsFactors = FALSE
-      )
+      rol <- trimws(input$rol %||% "")
+      para_informe <- trimws(input$para_informe %||% "")
+      notas <- trimws(input$notas %||% "")
 
-      df2 <- rbind(df, nueva)
+      if (es_edicion) {
+        i <- which(df$id == id)[[1]]
+        df$rama[i] <- rama
+        df$fecha[i] <- fecha
+        df$actividad[i] <- act
+        df$rol_alcance[i] <- rol
+        df$estado[i] <- estado
+        df$evidencia[i] <- evidencia_nombre
+        df$para_informe[i] <- para_informe
+        df$notas[i] <- notas
+        df2 <- df
+        texto <- paste0("Listo, actualic\u00e9 ", id, ".")
+        clase <- "banner-calma"
+        celebrar <- FALSE
+      } else {
+        nueva <- data.frame(
+          id = id,
+          rama = rama,
+          fecha = fecha,
+          actividad = act,
+          rol_alcance = rol,
+          estado = estado,
+          evidencia = evidencia_nombre,
+          para_informe = para_informe,
+          notas = notas,
+          creado_en = format(Sys.time(), "%Y-%m-%dT%H:%M:%S"),
+          stringsAsFactors = FALSE
+        )
+        df2 <- rbind(df, nueva)
+        texto <- mensaje_al_guardar(nrow(df2), rama)
+        clase <- "banner-ok"
+        celebrar <- TRUE
+      }
+
       tryCatch({
         guardar_actividades(df2, carpeta())
         sincronizar_markdown(df2, carpeta())
         datos(df2)
-        archivo_token(archivo_token() + 1L)
-        shiny::updateTextAreaInput(session, "actividad", value = "")
-        shiny::updateTextInput(session, "rol", value = "")
-        shiny::updateTextAreaInput(session, "para_informe", value = "")
-        shiny::updateTextAreaInput(session, "notas", value = "")
-        shiny::updateTextInput(session, "evidencia_url", value = "")
-        texto <- mensaje_al_guardar(nrow(df2), rama)
+        if (es_edicion) {
+          salir_de_edicion(reset_fecha = TRUE)
+        } else {
+          archivo_token(archivo_token() + 1L)
+          shiny::updateTextAreaInput(session, "actividad", value = "")
+          shiny::updateTextInput(session, "rol", value = "")
+          shiny::updateTextAreaInput(session, "para_informe", value = "")
+          shiny::updateTextAreaInput(session, "notas", value = "")
+          shiny::updateTextInput(session, "evidencia_url", value = "")
+        }
         detalle <- paste(id, "\u00b7", substr(act, 1L, 80L))
         celebra(list(
           texto = texto,
           detalle = detalle,
-          clase = "banner-ok",
+          clase = clase,
           cuando = Sys.time()
         ))
-        session$sendCustomMessage("cosecha-celebrar", list())
+        if (celebrar) session$sendCustomMessage("cosecha-celebrar", list())
         shiny::showNotification(texto, type = "message", duration = 6)
       }, error = function(e) {
         shiny::showNotification(conditionMessage(e), type = "error", duration = 8)
       })
+    })
+
+    shiny::observeEvent(input$editar, {
+      sel <- input$tabla_rows_selected
+      df <- datos_filtrados()
+      if (is.null(sel) || length(sel) == 0 || sel[[1]] > nrow(df)) {
+        shiny::showNotification(
+          "Elige una actividad en la tabla para editarla.",
+          type = "warning"
+        )
+        return()
+      }
+      cargar_en_formulario(df[sel[[1]], , drop = FALSE])
+    })
+
+    shiny::observeEvent(input$cancelar_edicion, {
+      salir_de_edicion(reset_fecha = TRUE)
     })
 
     shiny::observeEvent(input$eliminar, {
@@ -759,7 +959,7 @@ cosecha_app <- function(root_dir = NULL) {
         ),
         footer = shiny::tagList(
           shiny::modalButton("Mejor no"),
-          shiny::actionButton("confirmar_eliminar", "S\u00ed, quitar", class = "btn-danger")
+          shiny::actionButton("confirmar_eliminar", "S\u00ed, quitar", class = "btn-peligro")
         ),
         easyClose = TRUE
       ))
@@ -776,6 +976,7 @@ cosecha_app <- function(root_dir = NULL) {
         sincronizar_markdown(df, carpeta())
         datos(df)
         pendiente_borrar(NULL)
+        if (identical(editando(), id_borrar)) salir_de_edicion(reset_fecha = TRUE)
         celebra(list(
           texto = paste0("Listo, quit\u00e9 ", id_borrar, ". El archivo de evidencia, si lo hab\u00eda, sigue en la carpeta."),
           detalle = "",
@@ -785,20 +986,6 @@ cosecha_app <- function(root_dir = NULL) {
       }, error = function(e) {
         shiny::showNotification(conditionMessage(e), type = "error", duration = 8)
       })
-    })
-
-    shiny::observeEvent(input$sync_md, {
-      sincronizar_markdown(datos(), carpeta())
-      celebra(list(
-        texto = "\U0001f4dd Actualic\u00e9 las vistas en registro/. Sirven de borrador para el informe.",
-        detalle = "",
-        clase = "banner-calma",
-        cuando = Sys.time()
-      ))
-    })
-
-    shiny::observeEvent(input$abrir, {
-      abrir_carpeta(carpeta())
     })
 
     output$descargar_csv <- shiny::downloadHandler(

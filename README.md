@@ -53,7 +53,7 @@ cosecha/
 
 En la app, la primera pregunta es **¿Dónde está tu carpeta de Cosecha?**
 
-- **Elegir carpeta** abre la ventana de Windows.
+- **Elegir carpeta** abre el Finder en Mac, o la ventana de Windows.
 - O pegas la ruta y pulsas **Usar esta carpeta**.
 
 Esa carpeta queda con la estructura de arriba. Si ya tenía actividades, siguen ahí. La próxima apertura vuelve a la misma ruta.

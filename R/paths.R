@@ -276,6 +276,11 @@ preparar_carpeta <- function(path = NULL) {
 #' @return La ruta elegida, o `NULL` si se cancela.
 #' @export
 elegir_carpeta_dialogo <- function(inicial = NULL) {
+  # En Mac, rstudioapi y tcltk dejan el diálogo detrás del navegador:
+  # la app se queda oscura (Shiny espera) y el Finder no aparece.
+  if (identical(Sys.info()[["sysname"]], "Darwin")) {
+    return(elegir_carpeta_dialogo_mac(inicial))
+  }
   if (.Platform$OS.type != "windows") {
     return(elegir_carpeta_dialogo_otro(inicial))
   }
@@ -326,6 +331,70 @@ carpeta_inicial_dialogo <- function(inicial) {
     return(normalizePath(padre, winslash = "\\", mustWork = TRUE))
   }
   normalizePath("~", winslash = "\\", mustWork = FALSE)
+}
+
+escapar_applescript <- function(x) {
+  x <- gsub("\\", "\\\\", x, fixed = TRUE)
+  gsub("\"", "\\\"", x, fixed = TRUE)
+}
+
+# Panel nativo de macOS. No usa Apple Events hacia Finder: eso pide
+# permiso de Automatización y, si se niega, el diálogo nunca aparece.
+elegir_carpeta_dialogo_mac <- function(inicial = NULL) {
+  if (!file.exists("/usr/bin/osascript")) {
+    stop(
+      "No encontr\u00e9 el selector de carpetas de macOS. Pega la ruta y pulsa Usar esta carpeta.",
+      call. = FALSE
+    )
+  }
+  inicial <- carpeta_inicial_dialogo(inicial)
+  if (!dir.exists(inicial)) inicial <- path.expand("~")
+  script <- c(
+    "use framework \"AppKit\"",
+    "use framework \"Foundation\"",
+    "use scripting additions",
+    "set theApp to current application's NSApplication's sharedApplication()",
+    "theApp's setActivationPolicy:(current application's NSApplicationActivationPolicyAccessory)",
+    "theApp's activateIgnoringOtherApps:true",
+    "set panel to current application's NSOpenPanel's openPanel()",
+    "panel's setCanChooseFiles:false",
+    "panel's setCanChooseDirectories:true",
+    "panel's setAllowsMultipleSelection:false",
+    "panel's setCanCreateDirectories:true",
+    "panel's setPrompt:\"Elegir\"",
+    "panel's setMessage:\"Elige la carpeta de Cosecha\"",
+    sprintf(
+      "panel's setDirectoryURL:(current application's NSURL's fileURLWithPath:\"%s\")",
+      escapar_applescript(inicial)
+    ),
+    "set response to panel's runModal()",
+    "if response is (current application's NSModalResponseOK) then",
+    "  set theURL to panel's |URL|()",
+    "  return (theURL's |path|() as text)",
+    "end if",
+    "return \"\""
+  )
+  ps1 <- tempfile(fileext = ".applescript")
+  write_utf8(script, ps1)
+  on.exit(unlink(ps1), add = TRUE)
+  err <- tempfile(fileext = ".txt")
+  on.exit(unlink(err), add = TRUE)
+  out <- tryCatch(
+    system2("/usr/bin/osascript", ps1, stdout = TRUE, stderr = err),
+    error = function(e) e
+  )
+  if (inherits(out, "error") || !is.null(attr(out, "status"))) {
+    stop(
+      "No pude abrir la ventana para elegir carpeta. Pega la ruta y pulsa Usar esta carpeta.",
+      call. = FALSE
+    )
+  }
+  lineas <- str_trim_line(out)
+  lineas <- lineas[nzchar(lineas)]
+  if (!length(lineas)) return(NULL)
+  elegido <- lineas[[length(lineas)]]
+  if (!dir.exists(elegido)) return(NULL)
+  normalize_dir(elegido)
 }
 
 elegir_carpeta_dialogo_otro <- function(inicial) {
