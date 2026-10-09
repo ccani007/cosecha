@@ -10,7 +10,7 @@ local({
   if (basename(root) == "app") root <- dirname(root)
   setwd(root)
 
-  deps <- c("devtools", "pkgload", "shiny", "bslib", "DT", "readr", "dplyr", "stringr", "fs")
+  deps <- c("devtools", "pkgload", "shiny", "bslib", "DT", "readr", "fs")
   faltan <- deps[!vapply(deps, requireNamespace, quietly = TRUE, FUN.VALUE = logical(1))]
   if (length(faltan)) {
     install.packages(faltan, repos = "https://cloud.r-project.org")

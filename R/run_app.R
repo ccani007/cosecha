@@ -1,12 +1,12 @@
 #' Lanza la app de registro trienal
 #'
-#' Usa la carpeta que [crear_carpeta()] dejó recordada. Si todavía no
+#' Usa la carpeta que [crear_carpeta()] dej`r "\u00f3"` recordada. Si todav`r "\u00ed"`a no
 #' existe, la crea una vez. Volver a llamarla no abre otra carpeta ni
 #' borra actividades.
 #'
 #' @param data_dir Carpeta de trabajo. Si es `NULL`, usa la recordada o la
 #'   ruta por defecto (OneDrive Uniandes / Documentos).
-#' @param launch.browser Abrir el navegador automáticamente.
+#' @param launch.browser Abrir el navegador autom`r "\u00e1"`ticamente.
 #' @param ... Argumentos adicionales para [shiny::runApp()].
 #' @return Valor de retorno de [shiny::runApp()] (normalmente no regresa
 #'   hasta cerrar la app).
@@ -18,8 +18,8 @@
 #' run_app()
 #' }
 run_app <- function(data_dir = NULL, launch.browser = TRUE, ...) {
-  # El argumento se llama data_dir, así que aquí no se puede llamar
-  # a la función data_dir(): quedaría tapada por el argumento.
+  # El argumento se llama data_dir, asi que aqui no se puede llamar
+  # a la funcion data_dir(): quedaria tapada por el argumento.
   info <- preparar_carpeta(data_dir)
   if (isTRUE(info$cambio)) {
     message(
@@ -32,18 +32,18 @@ run_app <- function(data_dir = NULL, launch.browser = TRUE, ...) {
     )
     if (!identical(tolower(basename(info$path)), "cosecha")) {
       message(
-        "Esa carpeta ya tenía tus datos y se llama ", basename(info$path),
+        "Esa carpeta ya ten\u00eda tus datos y se llama ", basename(info$path),
         ". No se crea otra llamada cosecha."
       )
     }
   } else {
     message(
-      "Primera vez: creé la carpeta cosecha y recordé la ruta.\n  ",
+      "Primera vez: cre\u00e9 la carpeta cosecha y record\u00e9 la ruta.\n  ",
       info$path,
-      "\nLa próxima vez, aunque cierres R, run_app() vuelve aquí."
+      "\nLa pr\u00f3xima vez, aunque cierres R, run_app() vuelve aqu\u00ed."
     )
   }
-  message("Abriendo la app…")
+  message("Abriendo la app\u2026")
   app <- cosecha_app(root_dir = info$path)
   shiny::runApp(app, launch.browser = launch.browser, ...)
 }

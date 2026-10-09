@@ -6,15 +6,15 @@
 .cosecha_ramas <- c("docencia", "investigacion", "servicio")
 
 .cosecha_etiquetas <- c(
-  docencia = "📚 Docencia",
-  investigacion = "🔬 Investigación",
-  servicio = "🤝 Servicio"
+  docencia = "\U0001f4da Docencia",
+  investigacion = "\U0001f52c Investigaci\u00f3n",
+  servicio = "\U0001f91d Servicio"
 )
 
 .cosecha_prefijo <- c(docencia = "D", investigacion = "I", servicio = "S")
 
 .cosecha_estados <- c(
-  "", "Idea", "En preparación", "Enviado", "En revisión",
+  "", "Idea", "En preparaci\u00f3n", "Enviado", "En revisi\u00f3n",
   "Aceptado", "Publicado", "En curso", "Cerrado"
 )
 
@@ -187,7 +187,7 @@ body {
       document.body.appendChild(layer);
     }
     layer.replaceChildren();
-    var bits = ['🎉', '✨', '🌾', '📚', '🌟', '🥳', '💛', '🔬'];
+    var bits = ['\U0001f389', '\u2728', '\U0001f33e', '\U0001f4da', '\U0001f31f', '\U0001f973', '\U0001f49b', '\U0001f52c'];
     for (var i = 0; i < 18; i++) {
       var s = document.createElement('span');
       s.className = 'confetti-bit';
@@ -247,7 +247,7 @@ guardar_actividades <- function(df, root_dir) {
   if (!isTRUE(ok)) {
     stop(
       "No se pudo escribir datos/actividades.csv (archivo bloqueado). ",
-      "Ciérralo si está abierto en Excel e intenta de nuevo. ",
+      "Ci\u00e9rralo si est\u00e1 abierto en Excel e intenta de nuevo. ",
       ultimo_error %||% "",
       call. = FALSE
     )
@@ -281,19 +281,19 @@ escribir_markdown_rama <- function(df, rama, root_dir) {
   titulo <- switch(
     rama,
     docencia = "Docencia",
-    investigacion = "Investigación",
+    investigacion = "Investigaci\u00f3n",
     servicio = "Servicio"
   )
 
   lineas <- c(
-    paste0("# Registro — ", titulo),
+    paste0("# Registro \u2014 ", titulo),
     "",
-    "_Generado automáticamente desde `datos/actividades.csv` (paquete cosecha). No editar a mano._",
+    "_Generado autom\u00e1ticamente desde `datos/actividades.csv` (paquete cosecha). No editar a mano._",
     ""
   )
 
   if (nrow(sub) == 0) {
-    lineas <- c(lineas, "_Sin actividades registradas aún._", "")
+    lineas <- c(lineas, "_Sin actividades registradas a\u00fan._", "")
   } else if (identical(rama, "investigacion")) {
     lineas <- c(
       lineas,
@@ -355,9 +355,9 @@ tabla_visible <- function(df) {
 
 saludo_vacio <- function() {
   saludos <- c(
-    "🌱 Todavía no hay nada, y está bien. La primera actividad es la que más cuesta.",
-    "☀️ Anota algo del semestre, aunque sea chiquito: un curso, un artículo o un comité.",
-    "🍵 Con una actividad basta para empezar. El informe se arma de a poquitos."
+    "\U0001f331 Todav\u00eda no hay nada, y est\u00e1 bien. La primera actividad es la que m\u00e1s cuesta.",
+    "\u2600\ufe0f Anota algo del semestre, aunque sea chiquito: un curso, un art\u00edculo o un comit\u00e9.",
+    "\U0001f375 Con una actividad basta para empezar. El informe se arma de a poquitos."
   )
   saludos[[as.integer(format(Sys.Date(), "%j")) %% length(saludos) + 1L]]
 }
@@ -401,10 +401,10 @@ cosecha_app <- function(root_dir = NULL) {
   theme <- bslib::bs_add_rules(theme, .cosecha_css)
 
   ui <- bslib::page_sidebar(
-    window_title = "Cosecha — informe trienal",
+    window_title = "Cosecha \u2014 informe trienal",
     lang = "es",
     title = shiny::tags$span(
-      shiny::tags$span(class = "marca", "🌾 Cosecha"),
+      shiny::tags$span(class = "marca", "\U0001f33e Cosecha"),
       shiny::tags$span(class = "marca-sub", "tu informe trienal")
     ),
     theme = theme,
@@ -416,13 +416,13 @@ cosecha_app <- function(root_dir = NULL) {
         class = "ruta-fija",
         shiny::textInput(
           "ruta_texto",
-          "¿Dónde está tu carpeta de Cosecha?",
+          "\u00bfD\u00f3nde est\u00e1 tu carpeta de Cosecha?",
           value = root_dir,
           width = "100%",
-          placeholder = "Pega una ruta o elígela abajo"
+          placeholder = "Pega una ruta o el\u00edgela abajo"
         ),
         shiny::actionButton(
-          "elegir_ruta", "📂 Elegir carpeta",
+          "elegir_ruta", "\U0001f4c2 Elegir carpeta",
           class = "btn-outline-secondary btn-suave w-100"
         ),
         shiny::actionButton(
@@ -431,34 +431,34 @@ cosecha_app <- function(root_dir = NULL) {
         ),
         shiny::tags$p(
           class = "ruta-nota",
-          "Esa carpeta queda con docencia, investigación, servicio y las evidencias. Si ya tenía actividades, no se borran."
+          "Esa carpeta queda con docencia, investigaci\u00f3n, servicio y las evidencias. Si ya ten\u00eda actividades, no se borran."
         )
       ),
       shiny::tags$div(
         class = "lado-intro",
         shiny::tags$h2("Nueva actividad"),
-        shiny::tags$p("Docencia, investigación o servicio. Queda en la carpeta que elegiste, en tu computador.")
+        shiny::tags$p("Docencia, investigaci\u00f3n o servicio. Queda en la carpeta que elegiste, en tu computador.")
       ),
       shiny::selectInput("rama", "Sector", choices = c(
-        "📚 Docencia" = "docencia",
-        "🔬 Investigación" = "investigacion",
-        "🤝 Servicio" = "servicio"
+        "\U0001f4da Docencia" = "docencia",
+        "\U0001f52c Investigaci\u00f3n" = "investigacion",
+        "\U0001f91d Servicio" = "servicio"
       )),
       shiny::dateInput("fecha", "Fecha", value = Sys.Date(), format = "yyyy-mm-dd", language = "es"),
       shiny::textAreaInput(
-        "actividad", "¿Qué hiciste?", rows = 3,
-        placeholder = "Ej. Curso Algoritmos 2026-1, artículo, comité…"
+        "actividad", "\u00bfQu\u00e9 hiciste?", rows = 3,
+        placeholder = "Ej. Curso Algoritmos 2026-1, art\u00edculo, comit\u00e9\u2026"
       ),
       shiny::textInput(
         "rol", "Tu rol",
-        placeholder = "Profesor, investigadora principal, miembro…"
+        placeholder = "Profesor, investigadora principal, miembro\u2026"
       ),
       shiny::conditionalPanel(
         condition = "input.rama == 'investigacion'",
         shiny::selectInput("estado", "Estado del producto", choices = .cosecha_estados)
       ),
       shiny::textAreaInput(
-        "para_informe", "Por qué cuenta en el trienio", rows = 2,
+        "para_informe", "Por qu\u00e9 cuenta en el trienio", rows = 2,
         placeholder = "Una frase que luego puedas pegar en el informe"
       ),
       shiny::textAreaInput(
@@ -466,12 +466,12 @@ cosecha_app <- function(root_dir = NULL) {
         placeholder = "Detalles que no quieres olvidar"
       ),
       shiny::uiOutput("archivo_ui"),
-      shiny::textInput("evidencia_url", "O un enlace", placeholder = "https://doi.org/…"),
-      shiny::actionButton("guardar", "Guardar actividad 🎉", class = "btn-guardar w-100"),
+      shiny::textInput("evidencia_url", "O un enlace", placeholder = "https://doi.org/\u2026"),
+      shiny::actionButton("guardar", "Guardar actividad \U0001f389", class = "btn-guardar w-100"),
       shiny::div(
         class = "d-flex gap-2 mt-2",
-        shiny::actionButton("sync_md", "📝 Vistas", class = "btn-outline-secondary btn-suave flex-fill"),
-        shiny::actionButton("abrir", "📂 Carpeta", class = "btn-outline-secondary btn-suave flex-fill")
+        shiny::actionButton("sync_md", "\U0001f4dd Vistas", class = "btn-outline-secondary btn-suave flex-fill"),
+        shiny::actionButton("abrir", "\U0001f4c2 Carpeta", class = "btn-outline-secondary btn-suave flex-fill")
       )
     ),
     shiny::tags$script(shiny::HTML(.cosecha_js)),
@@ -479,25 +479,25 @@ cosecha_app <- function(root_dir = NULL) {
       class = "panel-principal",
       bslib::layout_columns(
         col_widths = c(4, 4, 4),
-        caja_sector("Docencia", "n_docencia", "📚", "#EFF6FF", "#1E3A8A"),
-        caja_sector("Investigación", "n_investigacion", "🔬", "#F5F3FF", "#5B21B6"),
-        caja_sector("Servicio", "n_servicio", "🤝", "#F0FDFA", "#115E59")
+        caja_sector("Docencia", "n_docencia", "\U0001f4da", "#EFF6FF", "#1E3A8A"),
+        caja_sector("Investigaci\u00f3n", "n_investigacion", "\U0001f52c", "#F5F3FF", "#5B21B6"),
+        caja_sector("Servicio", "n_servicio", "\U0001f91d", "#F0FDFA", "#115E59")
       ),
       shiny::uiOutput("banner"),
       bslib::card(
         bslib::card_header(
           class = "d-flex justify-content-between align-items-center flex-wrap gap-2",
-          shiny::tags$span("📒 Lo que llevas anotado"),
+          shiny::tags$span("\U0001f4d2 Lo que llevas anotado"),
           shiny::div(
             style = "min-width: 220px;",
             shiny::selectInput(
               "filtro_rama",
               label = NULL,
               choices = c(
-                "Todos los sectores ✨" = "todas",
-                "📚 Docencia" = "docencia",
-                "🔬 Investigación" = "investigacion",
-                "🤝 Servicio" = "servicio"
+                "Todos los sectores \u2728" = "todas",
+                "\U0001f4da Docencia" = "docencia",
+                "\U0001f52c Investigaci\u00f3n" = "investigacion",
+                "\U0001f91d Servicio" = "servicio"
               ),
               selected = "todas",
               width = "100%"
@@ -512,7 +512,7 @@ cosecha_app <- function(root_dir = NULL) {
         ),
         shiny::tags$p(
           class = "ruta-nota mt-3 mb-0",
-          paste0("Cosecha ", version, " · el registro vive en datos/actividades.csv")
+          paste0("Cosecha ", version, " \u00b7 el registro vive en datos/actividades.csv")
         )
       )
     )
@@ -544,14 +544,14 @@ cosecha_app <- function(root_dir = NULL) {
       n <- nrow(df)
       if (isTRUE(info$ya_existia)) {
         texto <- if (n == 1) {
-          "📌 Seguimos en tu carpeta. Ya tenía 1 actividad y no se borró nada."
+          "\U0001f4cc Seguimos en tu carpeta. Ya ten\u00eda 1 actividad y no se borr\u00f3 nada."
         } else if (n == 0) {
-          "📌 Seguimos en tu carpeta. No se borró nada."
+          "\U0001f4cc Seguimos en tu carpeta. No se borr\u00f3 nada."
         } else {
-          sprintf("📌 Seguimos en tu carpeta. Ya tenía %d actividades y no se borró nada.", n)
+          sprintf("\U0001f4cc Seguimos en tu carpeta. Ya ten\u00eda %d actividades y no se borr\u00f3 nada.", n)
         }
       } else {
-        texto <- "📁 Listo. En esa carpeta quedaron docencia, investigación, servicio y las evidencias."
+        texto <- "\U0001f4c1 Listo. En esa carpeta quedaron docencia, investigaci\u00f3n, servicio y las evidencias."
       }
       celebra(list(
         texto = texto,
@@ -565,7 +565,7 @@ cosecha_app <- function(root_dir = NULL) {
 
     shiny::observeEvent(input$elegir_ruta, {
       shiny::showNotification(
-        "Elige la carpeta en la ventana de Windows. Si no la ves, mírala en la barra de tareas.",
+        "Elige la carpeta en la ventana de Windows. Si no la ves, m\u00edrala en la barra de tareas.",
         type = "message",
         duration = 8,
         id = "eligiendo"
@@ -586,7 +586,7 @@ cosecha_app <- function(root_dir = NULL) {
 
     output$archivo_ui <- shiny::renderUI({
       archivo_token()
-      shiny::fileInput("archivo", "📎 Evidencia (opcional)", multiple = FALSE)
+      shiny::fileInput("archivo", "\U0001f4ce Evidencia (opcional)", multiple = FALSE)
     })
 
     contar <- function(rama) {
@@ -613,9 +613,9 @@ cosecha_app <- function(root_dir = NULL) {
         return(shiny::tags$div(class = "banner banner-hola", saludo_vacio()))
       }
       texto <- if (n == 1) {
-        "📒 Llevas 1 actividad. Ya está en tu carpeta, esperando el informe."
+        "\U0001f4d2 Llevas 1 actividad. Ya est\u00e1 en tu carpeta, esperando el informe."
       } else {
-        sprintf("📒 Llevas %d actividades. Todo sigue en tu carpeta.", n)
+        sprintf("\U0001f4d2 Llevas %d actividades. Todo sigue en tu carpeta.", n)
       }
       shiny::tags$div(class = "banner banner-calma", texto)
     })
@@ -653,8 +653,8 @@ cosecha_app <- function(root_dir = NULL) {
             search = "Buscar:",
             lengthMenu = "Mostrar _MENU_",
             info = "_START_ a _END_ de _TOTAL_",
-            infoEmpty = "Sin actividades todavía",
-            zeroRecords = "Sin actividades todavía",
+            infoEmpty = "Sin actividades todav\u00eda",
+            zeroRecords = "Sin actividades todav\u00eda",
             paginate = list(previous = "Anterior", `next` = "Siguiente")
           )
         )
@@ -665,7 +665,7 @@ cosecha_app <- function(root_dir = NULL) {
       act <- trimws(input$actividad %||% "")
       if (!nzchar(act)) {
         shiny::showNotification(
-          "Falta la actividad. Cuéntame qué hiciste, aunque sea en una frase.",
+          "Falta la actividad. Cu\u00e9ntame qu\u00e9 hiciste, aunque sea en una frase.",
           type = "warning"
         )
         return()
@@ -724,7 +724,7 @@ cosecha_app <- function(root_dir = NULL) {
         shiny::updateTextAreaInput(session, "notas", value = "")
         shiny::updateTextInput(session, "evidencia_url", value = "")
         texto <- mensaje_al_guardar(nrow(df2), rama)
-        detalle <- paste(id, "·", substr(act, 1L, 80L))
+        detalle <- paste(id, "\u00b7", substr(act, 1L, 80L))
         celebra(list(
           texto = texto,
           detalle = detalle,
@@ -750,16 +750,16 @@ cosecha_app <- function(root_dir = NULL) {
       shiny::showModal(shiny::modalDialog(
         title = "Quitar esta actividad",
         shiny::tags$p(
-          "¿Quitamos ", shiny::tags$strong(id_borrar), " del registro?"
+          "\u00bfQuitamos ", shiny::tags$strong(id_borrar), " del registro?"
         ),
         shiny::tags$p(act),
         shiny::tags$p(
           class = "text-muted",
-          "Si había un archivo de evidencia, se queda en la carpeta."
+          "Si hab\u00eda un archivo de evidencia, se queda en la carpeta."
         ),
         footer = shiny::tagList(
           shiny::modalButton("Mejor no"),
-          shiny::actionButton("confirmar_eliminar", "Sí, quitar", class = "btn-danger")
+          shiny::actionButton("confirmar_eliminar", "S\u00ed, quitar", class = "btn-danger")
         ),
         easyClose = TRUE
       ))
@@ -777,7 +777,7 @@ cosecha_app <- function(root_dir = NULL) {
         datos(df)
         pendiente_borrar(NULL)
         celebra(list(
-          texto = paste0("Listo, quité ", id_borrar, ". El archivo de evidencia, si lo había, sigue en la carpeta."),
+          texto = paste0("Listo, quit\u00e9 ", id_borrar, ". El archivo de evidencia, si lo hab\u00eda, sigue en la carpeta."),
           detalle = "",
           clase = "banner-aviso",
           cuando = Sys.time()
@@ -790,7 +790,7 @@ cosecha_app <- function(root_dir = NULL) {
     shiny::observeEvent(input$sync_md, {
       sincronizar_markdown(datos(), carpeta())
       celebra(list(
-        texto = "📝 Actualicé las vistas en registro/. Sirven de borrador para el informe.",
+        texto = "\U0001f4dd Actualic\u00e9 las vistas en registro/. Sirven de borrador para el informe.",
         detalle = "",
         clase = "banner-calma",
         cuando = Sys.time()

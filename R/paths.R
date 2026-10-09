@@ -1,6 +1,6 @@
-# La ruta NO depende de la carpeta donde esté parada R.
-# Se recuerda en el directorio de configuración del usuario
-# (tools::R_user_dir), que sobrevive a cerrar la sesión.
+# La ruta NO depende de la carpeta donde este parada R.
+# Se recuerda en el directorio de configuracion del usuario
+# (tools::R_user_dir), que sobrevive a cerrar la sesion.
 
 config_path <- function() {
   file.path(tools::R_user_dir("cosecha", which = "config"), "data_dir.txt")
@@ -63,8 +63,8 @@ tiene_datos <- function(path) {
 
 #' Busca una carpeta que ya tenga actividades.
 #'
-#' `Ordenamiento` va primero: si el profesor ya guardó ahí, esa gana
-#' y no se abre una `cosecha` vacía al lado.
+#' `Ordenamiento` va primero: si el profesor ya guard`r "\u00f3"` ah`r "\u00ed"`, esa gana
+#' y no se abre una `cosecha` vac`r "\u00ed"`a al lado.
 #' @noRd
 buscar_carpeta_existente <- function(padres) {
   for (padre in padres) {
@@ -95,7 +95,7 @@ default_data_dir <- function() {
 
 #' Obtiene la carpeta de datos configurada
 #'
-#' Primero mira la ruta recordada en este computador. Si todavía no hay,
+#' Primero mira la ruta recordada en este computador. Si todav`r "\u00ed"`a no hay,
 #' usa OneDrive de Uniandes, otro OneDrive, o Documentos.
 #'
 #' @return Ruta absoluta a la carpeta de datos.
@@ -111,7 +111,7 @@ data_dir <- function() {
   default_data_dir()
 }
 
-#' Fija la carpeta de datos (y la recuerda para próximas sesiones)
+#' Fija la carpeta de datos (y la recuerda para pr`r "\u00f3"`ximas sesiones)
 #'
 #' @param path Ruta a la carpeta de datos.
 #' @return La ruta normalizada (invisible).
@@ -136,12 +136,12 @@ leeme_lineas <- function() {
     "Cosecha",
     "=======",
     "",
-    "Aquí viven tus actividades del informe trienal.",
-    "No borres esta carpeta: la app recuerda esta ruta y vuelve a escribir aquí.",
+    "Aqu\u00ed viven tus actividades del informe trienal.",
+    "No borres esta carpeta: la app recuerda esta ruta y vuelve a escribir aqu\u00ed.",
     "",
     "datos/                      actividades.csv (el registro)",
     "evidencias/docencia/        archivos de docencia",
-    "evidencias/investigacion/   archivos de investigación",
+    "evidencias/investigacion/   archivos de investigaci\u00f3n",
     "evidencias/servicio/        archivos de servicio",
     "registro/                   vistas en Markdown para armar el informe",
     "informe-trienal/            borrador",
@@ -161,14 +161,14 @@ leeme_lineas <- function() {
 #' @export
 ensure_data_dir <- function(path = NULL) {
   path <- normalize_dir(path %||% data_dir())
-  # Si la carpeta ya tiene el registro, se sigue usando aunque ahí también
-  # haya una copia del código. Solo se bloquea una carpeta de paquete vacía,
+  # Si la carpeta ya tiene el registro, se sigue usando aunque ahi tambien
+  # haya una copia del codigo. Solo se bloquea una carpeta de paquete vacia,
   # para no mezclar un repo nuevo con evidencias.
   if (es_codigo_del_paquete(path) &&
       !file.exists(file.path(path, "datos", "actividades.csv"))) {
     stop(
-      "Esa ruta es el código del paquete y todavía no tiene actividades. ",
-      "Usa crear_carpeta() sin argumentos, o pásale una carpeta tuya ",
+      "Esa ruta es el c\u00f3digo del paquete y todav\u00eda no tiene actividades. ",
+      "Usa crear_carpeta() sin argumentos, o p\u00e1sale una carpeta tuya ",
       "(por ejemplo en Documentos).",
       call. = FALSE
     )
@@ -203,11 +203,11 @@ ensure_data_dir <- function(path = NULL) {
 
 #' Crea la carpeta cosecha una sola vez y recuerda la ruta
 #'
-#' La primera vez arma docencia, investigación, servicio y evidencias.
-#' Si el profesor ya tenía una carpeta (por ejemplo `Ordenamiento`),
+#' La primera vez arma docencia, investigaci`r "\u00f3"`n, servicio y evidencias.
+#' Si el profesor ya ten`r "\u00ed"`a una carpeta (por ejemplo `Ordenamiento`),
 #' sigue usando esa: no crea otra ni mueve los archivos.
-#' Esa ruta se guarda en el computador, así que la próxima sesión de R
-#' —aunque cambies de carpeta de trabajo— vuelve al mismo lugar.
+#' Esa ruta se guarda en el computador, as`r "\u00ed"` que la pr`r "\u00f3"`xima sesi`r "\u00f3"`n de R
+#' `r "\u2014"`aunque cambies de carpeta de trabajo`r "\u2014"` vuelve al mismo lugar.
 #'
 #' @param path Carpeta de trabajo. Si es `NULL`, usa la recordada o la
 #'   ruta por defecto (OneDrive Uniandes / Documentos).
@@ -222,39 +222,39 @@ crear_carpeta <- function(path = NULL) {
   info <- preparar_carpeta(path)
   if (isTRUE(info$cambio)) {
     message(
-      "A partir de ahora Cosecha usará esta carpeta.\n",
+      "A partir de ahora Cosecha usar\u00e1 esta carpeta.\n",
       "  ", info$path, "\n",
-      "La anterior no se borró:\n",
+      "La anterior no se borr\u00f3:\n",
       "  ", info$anterior
     )
     if (!isTRUE(info$ya_existia)) {
-      message("En esa ruta acabo de armar docencia, investigación, servicio y las evidencias.")
+      message("En esa ruta acabo de armar docencia, investigaci\u00f3n, servicio y las evidencias.")
     }
   } else if (isTRUE(info$ya_existia)) {
     message(
-      "Ya tenías esta carpeta. Cosecha sigue guardando aquí y no crea otra:\n",
+      "Ya ten\u00edas esta carpeta. Cosecha sigue guardando aqu\u00ed y no crea otra:\n",
       "  ", info$path
     )
     if (!identical(tolower(basename(info$path)), "cosecha")) {
       message(
-        "Sigue llamándose ", basename(info$path),
-        ": ahí ya estaban tus actividades. No se crea una carpeta cosecha vacía."
+        "Sigue llam\u00e1ndose ", basename(info$path),
+        ": ah\u00ed ya estaban tus actividades. No se crea una carpeta cosecha vac\u00eda."
       )
     }
-    message("La próxima vez, run_app() vuelve a esta misma ruta.")
+    message("La pr\u00f3xima vez, run_app() vuelve a esta misma ruta.")
   } else {
     message(
       "Listo. Carpeta cosecha creada en:\n",
       "  ", info$path, "\n",
-      "Adentro están docencia, investigación, servicio y las evidencias.\n",
-      "Esa ruta quedó recordada en este computador. Cerrar R no la cambia.\n",
+      "Adentro est\u00e1n docencia, investigaci\u00f3n, servicio y las evidencias.\n",
+      "Esa ruta qued\u00f3 recordada en este computador. Cerrar R no la cambia.\n",
       "Ahora abre la app con run_app()."
     )
   }
   invisible(info$path)
 }
 
-#' Arma la carpeta si falta y dice si ya tenía datos
+#' Arma la carpeta si falta y dice si ya ten`r "\u00ed"`a datos
 #' @noRd
 preparar_carpeta <- function(path = NULL) {
   anterior <- remembered_dir()

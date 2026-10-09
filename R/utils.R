@@ -31,27 +31,27 @@ mensaje_al_guardar <- function(n, rama) {
   rama_txt <- switch(
     rama,
     docencia = "docencia",
-    investigacion = "investigación",
+    investigacion = "investigaci\u00f3n",
     servicio = "servicio",
     "tu trienio"
   )
   hitos <- c(
-    "1" = "🌱 ¡Primera actividad! El trienio ya empezó, y quedó guardada.",
-    "5" = "🚀 ¡Van 5! Ese ritmo se siente bien.",
-    "10" = "🏆 ¡Diez actividades! El informe ya tiene de dónde agarrarse.",
-    "15" = "✨ ¡Quince! Vas dejando el trienio en orden.",
-    "20" = "🌟 ¡Veinte registros! Esto ya es una cosecha.",
-    "25" = "💛 ¡Veinticinco! Tu yo del futuro te lo agradece.",
-    "50" = "🥳 ¡Cincuenta! Qué trienio tan bien contado."
+    "1" = "\U0001f331 \u00a1Primera actividad! El trienio ya empez\u00f3, y qued\u00f3 guardada.",
+    "5" = "\U0001f680 \u00a1Van 5! Ese ritmo se siente bien.",
+    "10" = "\U0001f3c6 \u00a1Diez actividades! El informe ya tiene de d\u00f3nde agarrarse.",
+    "15" = "\u2728 \u00a1Quince! Vas dejando el trienio en orden.",
+    "20" = "\U0001f31f \u00a1Veinte registros! Esto ya es una cosecha.",
+    "25" = "\U0001f49b \u00a1Veinticinco! Tu yo del futuro te lo agradece.",
+    "50" = "\U0001f973 \u00a1Cincuenta! Qu\u00e9 trienio tan bien contado."
   )
   clave <- as.character(n)
   if (clave %in% names(hitos)) return(unname(hitos[[clave]]))
   comunes <- c(
-    sprintf("🎉 ¡Quedó guardada! Sumaste algo a %s.", rama_txt),
-    sprintf("✨ ¡Listo! Esa actividad de %s ya está a salvo.", rama_txt),
-    "📁 ¡Bien hecho! Quedó en tu carpeta, lista para el informe.",
-    "🌾 ¡Excelente! Una más en la cosecha del trienio.",
-    "💪 ¡Anotado! Menos memoria, más tranquilidad."
+    sprintf("\U0001f389 \u00a1Qued\u00f3 guardada! Sumaste algo a %s.", rama_txt),
+    sprintf("\u2728 \u00a1Listo! Esa actividad de %s ya est\u00e1 a salvo.", rama_txt),
+    "\U0001f4c1 \u00a1Bien hecho! Qued\u00f3 en tu carpeta, lista para el informe.",
+    "\U0001f33e \u00a1Excelente! Una m\u00e1s en la cosecha del trienio.",
+    "\U0001f4aa \u00a1Anotado! Menos memoria, m\u00e1s tranquilidad."
   )
   comunes[((n - 1L) %% length(comunes)) + 1L]
 }
