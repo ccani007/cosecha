@@ -7,16 +7,19 @@
 crear_carpeta(path = NULL)
 }
 \arguments{
-\item{path}{Carpeta de trabajo. Si es \code{NULL}, usa la recordada o la
-ruta por defecto (OneDrive Uniandes / Documentos).}
+\item{path}{Lugar donde crear \code{cosecha}, o una carpeta que ya se llame
+así. Si es \code{NULL}, usa la recordada o la ruta por defecto
+(OneDrive Uniandes / Documentos).}
 }
 \value{
 La ruta de la carpeta (invisible).
 }
 \description{
-La primera vez arma docencia, investigación, servicio y evidencias.
-Si el profesor ya tenía una carpeta (por ejemplo \code{Ordenamiento}),
-sigue usando esa: no crea otra ni mueve los archivos.
+La primera vez crea una carpeta llamada \code{cosecha} y, adentro,
+docencia, investigación, servicio y evidencias.
+Si le pasas un lugar (el Escritorio, Documentos, OneDrive), \code{cosecha}
+se crea ahí. Si el profesor ya tenía una carpeta propia con actividades
+(por ejemplo \code{Ordenamiento}), sigue usando esa.
 Esa ruta se guarda en el computador, así que la próxima sesión de R
 —aunque cambies de carpeta de trabajo— vuelve al mismo lugar.
 }

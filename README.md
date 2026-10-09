@@ -56,10 +56,11 @@ En la app, la primera pregunta es **¿Dónde está tu carpeta de Cosecha?**
 - **Elegir carpeta** abre el Finder en Mac, o la ventana de Windows.
 - O pegas la ruta y pulsas **Usar esta carpeta**.
 
-Esa carpeta queda con la estructura de arriba. Si ya tenía actividades, siguen ahí. La próxima apertura vuelve a la misma ruta.
+Si eliges un lugar (el Escritorio, Documentos, OneDrive), ahí se crea una carpeta llamada `cosecha` y adentro van `datos/`, `evidencias/`, `registro/` e `informe-trienal/`. Si eliges una carpeta que ya se llama `cosecha`, se usa esa. Si ya tenía actividades, siguen ahí. La próxima apertura vuelve a la misma ruta.
 
 ```r
-crear_carpeta("D:/Uniandes/cosecha")   # otro lugar, si lo prefieres
+crear_carpeta("~/Desktop")             # crea ~/Desktop/cosecha
+crear_carpeta("D:/Uniandes/cosecha")   # la ruta ya se llama cosecha
 data_dir()                              # ver dónde guarda
 abrir_carpeta()                         # abrirla en el explorador
 ```

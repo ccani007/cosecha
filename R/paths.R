@@ -151,16 +151,68 @@ leeme_lineas <- function() {
   )
 }
 
+#' El Escritorio, Documentos o el OneDrive son un lugar, no la carpeta de datos
+#' @noRd
+es_lugar_general <- function(path) {
+  path <- normalize_dir(path)
+  if (!nzchar(path)) return(FALSE)
+  nombre <- tolower(basename(path))
+  if (nombre %in% c("desktop", "documents", "downloads", "escritorio", "documentos")) {
+    return(TRUE)
+  }
+  if (identical(path, normalize_dir(path.expand("~")))) return(TRUE)
+  padres <- vapply(padres_datos(), normalize_dir, character(1), USE.NAMES = FALSE)
+  path %in% padres[nzchar(padres)]
+}
+
+#' Si el lugar ya recibió las subcarpetas sueltas, las pasa a cosecha/
+#' @noRd
+acomodar_estructura_en <- function(padre, destino) {
+  if (!tiene_datos(padre) || tiene_datos(destino)) return(invisible(destino))
+  fs::dir_create(destino)
+  piezas <- c("datos", "evidencias", "registro", "informe-trienal", "LEEME.txt")
+  for (nombre in piezas) {
+    origen <- file.path(padre, nombre)
+    if (!file.exists(origen)) next
+    objetivo <- file.path(destino, nombre)
+    if (file.exists(objetivo)) next
+    if (!isTRUE(file.rename(origen, objetivo))) {
+      warning(
+        "No pude mover ", origen, " dentro de ", destino, ".",
+        call. = FALSE
+      )
+    }
+  }
+  invisible(destino)
+}
+
+#' El lugar que indica la profesora contiene una carpeta llamada cosecha
+#'
+#' `~/Desktop` queda en `~/Desktop/cosecha`. Una ruta que ya termina en
+#' `cosecha`, o una carpeta propia que ya tiene actividades (por ejemplo
+#' `Ordenamiento`), se usa tal cual.
+#' @noRd
+anidar_en_cosecha <- function(path) {
+  path <- normalize_dir(path)
+  if (!nzchar(path)) return(path)
+  if (identical(tolower(basename(path)), "cosecha")) return(path)
+  if (tiene_datos(path) && !es_lugar_general(path)) return(path)
+  destino <- normalize_dir(file.path(path, "cosecha"))
+  if (es_lugar_general(path)) acomodar_estructura_en(path, destino)
+  destino
+}
+
 #' Crea la estructura de carpetas si no existe
 #'
 #' Si la carpeta ya tiene datos, no los toca. Solo crea lo que falte
-#' y vuelve a recordar la ruta.
+#' y vuelve a recordar la ruta. Un lugar como el Escritorio o Documentos
+#' recibe adentro una carpeta llamada cosecha; las subcarpetas van ahí.
 #'
-#' @param path Carpeta de datos. Por defecto [data_dir()].
+#' @param path Lugar o carpeta de datos. Por defecto [data_dir()].
 #' @return La ruta asegurada (invisible).
 #' @export
 ensure_data_dir <- function(path = NULL) {
-  path <- normalize_dir(path %||% data_dir())
+  path <- anidar_en_cosecha(normalize_dir(path %||% data_dir()))
   # Si la carpeta ya tiene el registro, se sigue usando aunque ahi tambien
   # haya una copia del codigo. Solo se bloquea una carpeta de paquete vacia,
   # para no mezclar un repo nuevo con evidencias.
@@ -203,14 +255,17 @@ ensure_data_dir <- function(path = NULL) {
 
 #' Crea la carpeta cosecha una sola vez y recuerda la ruta
 #'
-#' La primera vez arma docencia, investigaci`r "\u00f3"`n, servicio y evidencias.
-#' Si el profesor ya ten`r "\u00ed"`a una carpeta (por ejemplo `Ordenamiento`),
-#' sigue usando esa: no crea otra ni mueve los archivos.
-#' Esa ruta se guarda en el computador, as`r "\u00ed"` que la pr`r "\u00f3"`xima sesi`r "\u00f3"`n de R
-#' `r "\u2014"`aunque cambies de carpeta de trabajo`r "\u2014"` vuelve al mismo lugar.
+#' La primera vez crea una carpeta llamada `cosecha` y, adentro,
+#' docencia, investigación, servicio y evidencias.
+#' Si le pasas un lugar (el Escritorio, Documentos, OneDrive), `cosecha`
+#' se crea ahí. Si el profesor ya tenía una carpeta propia con actividades
+#' (por ejemplo `Ordenamiento`), sigue usando esa.
+#' Esa ruta se guarda en el computador, así que la próxima sesión de R
+#' —aunque cambies de carpeta de trabajo— vuelve al mismo lugar.
 #'
-#' @param path Carpeta de trabajo. Si es `NULL`, usa la recordada o la
-#'   ruta por defecto (OneDrive Uniandes / Documentos).
+#' @param path Lugar donde crear `cosecha`, o una carpeta que ya se llame
+#'   así. Si es `NULL`, usa la recordada o la ruta por defecto
+#'   (OneDrive Uniandes / Documentos).
 #' @return La ruta de la carpeta (invisible).
 #' @export
 #' @examples
@@ -258,7 +313,7 @@ crear_carpeta <- function(path = NULL) {
 #' @noRd
 preparar_carpeta <- function(path = NULL) {
   anterior <- remembered_dir()
-  path <- normalize_dir(path %||% data_dir())
+  path <- anidar_en_cosecha(normalize_dir(path %||% data_dir()))
   ya <- file.exists(file.path(path, "datos", "actividades.csv"))
   path <- ensure_data_dir(path)
   list(
