@@ -26,7 +26,7 @@ Desde esta carpeta, o cuando el repositorio ya esté publicado:
 
 ```r
 install.packages("devtools")
-devtools::install_github("ccani007/Ordenamiento")
+devtools::install_github("ccani007/cosecha")
 
 library(cosecha)
 crear_carpeta()
