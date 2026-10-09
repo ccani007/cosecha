@@ -1,49 +1,82 @@
-# ordenamiento
+<h1 align="center">🌾 Cosecha</h1>
+<p align="center">
+  <strong>Tu informe trienal, sin afán.</strong><br>
+  Docencia, investigación y servicio, guardados en tu computador a medida que van pasando.
+</p>
 
-Paquete R con una app Shiny para registrar actividades del **informe trienal** académico (docencia, investigación y servicio).
+<p align="center">
+  <img alt="R 4.1 o más" src="https://img.shields.io/badge/R-%E2%89%A5%204.1-276DC3?style=flat-square&logo=r&logoColor=white">
+  <img alt="Shiny" src="https://img.shields.io/badge/app-Shiny-9A3412?style=flat-square">
+  <img alt="Licencia MIT" src="https://img.shields.io/badge/licencia-MIT-3F6212?style=flat-square">
+</p>
 
-## Separación importante
+Cosecha es un paquete de R con una app para profesores de la Universidad de los Andes. Cada actividad queda anotada, con su evidencia, para cuando llegue el momento de armar el informe trienal.
 
-| Carpeta | Qué es | ¿Va a Git? |
-|---------|--------|------------|
-| Este repo (`paquete-ordenamiento`) | Código del paquete | Sí |
-| Carpeta personal `Ordenamiento` | Tus evidencias y CSV | **No** |
+Los datos no viven en el paquete. Viven en una carpeta tuya.
 
-La app **nunca** guarda datos dentro del paquete. Escribe en una carpeta de usuario (por defecto en OneDrive/Documentos).
+| | Sector | Qué va ahí |
+|---|---|---|
+| 📚 | **Docencia** | Cursos, asesorías, materiales |
+| 🔬 | **Investigación** | Artículos, proyectos, productos y su estado |
+| 🤝 | **Servicio** | Comités, coordinación, extensión |
 
-## Instalación
+## Empezar
+
+Desde esta carpeta, o cuando el repositorio ya esté publicado:
 
 ```r
-# Desde GitHub (cuando publiques), por ejemplo:
-# remotes::install_github("tu-usuario/ordenamiento")
+install.packages("devtools")
+devtools::install_github("ccani007/Ordenamiento")
 
-# Desde esta carpeta en local:
-install.packages(c("devtools", "pkgload"))
-devtools::install(".")
-```
-
-## Uso
-
-```r
-library(ordenamiento)
+library(cosecha)
+crear_carpeta()
 run_app()
 ```
 
-La primera vez crea (o reutiliza) la carpeta de datos, por ejemplo:
+`crear_carpeta()` arma la carpeta una vez y recuerda la ruta. `run_app()` abre la app. Cerrar R no cambia esa ruta, y volver a correr las funciones no borra lo que ya guardaste.
 
-`OneDrive - Universidad de los Andes/Ordenamiento`
+## La carpeta
 
-```r
-data_dir()              # ver dónde guarda
-set_data_dir("D:/ruta") # elegir otra carpeta
-abrir_carpeta()         # abrir en el explorador
+Por defecto queda en OneDrive de Uniandes o en Documentos, con este nombre:
+
+```text
+cosecha/
+├── datos/actividades.csv
+├── evidencias/
+│   ├── docencia/
+│   ├── investigacion/
+│   └── servicio/
+├── registro/
+├── informe-trienal/borrador/
+└── LEEME.txt
 ```
 
-## Desarrollo
+En la app, la primera pregunta es **¿Dónde está tu carpeta de Cosecha?**
+
+- **Elegir carpeta** abre la ventana de Windows.
+- O pegas la ruta y pulsas **Usar esta carpeta**.
+
+Esa carpeta queda con la estructura de arriba. Si ya tenía actividades, siguen ahí. La próxima apertura vuelve a la misma ruta.
+
+```r
+crear_carpeta("D:/Uniandes/cosecha")   # otro lugar, si lo prefieres
+data_dir()                              # ver dónde guarda
+abrir_carpeta()                         # abrirla en el explorador
+```
+
+## Si ya tenías carpeta
+
+Una carpeta anterior con `datos/actividades.csv` o con `evidencias/` —aunque se llame `Ordenamiento`— se sigue usando. Cosecha no le cambia el nombre y no crea otra vacía al lado. En la app también puedes señalarla tú.
+
+## Para desarrollar
 
 ```r
 pkgload::load_all()
 run_app()
 ```
 
-O botón **Play** en `app/app.R`.
+El botón **Play** de `app/app.R` abre la misma app y usa la ruta recordada.
+
+## Licencia
+
+MIT. El código se puede compartir. Las evidencias de cada profesor se quedan en su computador.

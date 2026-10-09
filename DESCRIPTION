@@ -1,14 +1,15 @@
-Package: ordenamiento
-Title: Registro Trienal Uniandes (Docencia, Investigación, Servicio)
+Package: cosecha
+Title: Cosecha — Registro del Informe Trienal Uniandes
 Version: 0.1.0
 Authors@R: person(
     "C.", "Canizares",
     email = "c.canizares54@uniandes.edu.co",
     role = c("aut", "cre")
   )
-Description: Paquete con una app Shiny para registrar actividades del
-    informe trienal. Crea una sola vez la carpeta de trabajo en el
-    computador y, en cada ejecución, abre la app y actualiza esa carpeta.
+Description: App Shiny para que un profesor vaya guardando docencia,
+    investigación y servicio del informe trienal. Crea una sola vez la
+    carpeta cosecha en el computador, recuerda esa ruta y, en cada
+    ejecución, escribe ahí sin volver a crear ni borrar nada.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Language: es

@@ -23,5 +23,5 @@ local({
   }
 
   # Importante: sin data_dir = root, para no guardar evidencias dentro del repo
-  ordenamiento::run_app()
+  cosecha::run_app()
 })
