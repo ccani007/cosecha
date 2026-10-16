@@ -12,7 +12,13 @@
 
 Cosecha es un paquete de R con una app para profesores de la Universidad de los Andes. Cada actividad queda anotada, con su evidencia, para cuando llegue el momento de armar el informe trienal.
 
-Los datos no viven en el paquete. Viven en una carpeta tuya.
+Las actividades quedan en uno de estos sectores:
+
+| | Sector | Qué va ahí |
+|---|---|---|
+| 📚 | **Docencia** | Cursos, asesorías, materiales |
+| 🔬 | **Investigación** | Artículos, proyectos, productos y su estado |
+| 🤝 | **Servicio** | Comités, coordinación, extensión |
 
 ## Cómo funciona
 
@@ -22,20 +28,20 @@ El video recorre la primera vez: crear la carpeta y anotar una actividad.
   <a href="pkgdown/assets/instructive.mp4">Ver el video</a>
 </video>
 
-| | Sector | Qué va ahí |
-|---|---|---|
-| 📚 | **Docencia** | Cursos, asesorías, materiales |
-| 🔬 | **Investigación** | Artículos, proyectos, productos y su estado |
-| 🤝 | **Servicio** | Comités, coordinación, extensión |
+
 
 ## Empezar
 
-Desde esta carpeta, o cuando el repositorio ya esté publicado:
+Para instalar el paquete, corre estas dos funciones:
 
 ```r
 install.packages("devtools")
 devtools::install_github("ccani007/cosecha")
+```
 
+Para interactuar por primera vez con el paquete:
+
+```r
 library(cosecha)
 crear_carpeta()
 run_app()
@@ -45,7 +51,7 @@ run_app()
 
 ## La carpeta
 
-Por defecto queda en OneDrive de Uniandes o en Documentos, con este nombre:
+Por defecto queda en OneDrive de Uniandes, si esa carpeta existe, o en Documentos, con este nombre:
 
 ```text
 cosecha/
