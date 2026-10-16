@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+
+<title>Qué hay en cada carpeta</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Qué hay en cada carpeta</h1>
+
+
+
+<p>Cosecha guarda todo en una carpeta tuya. El registro de verdad es
+<code>datos/actividades.csv</code>. Las otras carpetas son copias para
+leer, archivos que adjuntaste, o un lugar para el borrador del
+informe.</p>
+<pre class="text"><code>cosecha/
+├── datos/actividades.csv
+├── evidencias/
+│   ├── docencia/
+│   ├── investigacion/
+│   └── servicio/
+├── registro/
+│   ├── docencia.md
+│   ├── investigacion.md
+│   └── servicio.md
+├── informe-trienal/borrador/
+└── LEEME.txt</code></pre>
+<div id="datos" class="section level2">
+<h2>datos/</h2>
+<p><code>datos/actividades.csv</code> es la lista de actividades. Cada
+fila es una. La app lee y escribe ese archivo.</p>
+<table>
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Columna</th>
+<th>De dónde sale</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>id</code></td>
+<td>Lo pone Cosecha: <code>D-001</code> docencia, <code>I-001</code>
+investigación, <code>S-001</code> servicio</td>
+</tr>
+<tr class="even">
+<td><code>rama</code></td>
+<td>El sector: <code>docencia</code>, <code>investigacion</code> o
+<code>servicio</code></td>
+</tr>
+<tr class="odd">
+<td><code>fecha</code></td>
+<td>La fecha del formulario</td>
+</tr>
+<tr class="even">
+<td><code>actividad</code></td>
+<td>Lo que escribiste en <strong>¿Qué hiciste?</strong></td>
+</tr>
+<tr class="odd">
+<td><code>rol_alcance</code></td>
+<td><strong>Tu rol</strong></td>
+</tr>
+<tr class="even">
+<td><code>estado</code></td>
+<td>El estado del producto. Solo en investigación</td>
+</tr>
+<tr class="odd">
+<td><code>evidencia</code></td>
+<td>El nombre del archivo, o el enlace si pegaste una URL</td>
+</tr>
+<tr class="even">
+<td><code>para_informe</code></td>
+<td><strong>Por qué cuenta en el trienio</strong></td>
+</tr>
+<tr class="odd">
+<td><code>notas</code></td>
+<td><strong>Notas para ti</strong></td>
+</tr>
+<tr class="even">
+<td><code>creado_en</code></td>
+<td>El momento en que se guardó por primera vez</td>
+</tr>
+</tbody>
+</table>
+<p>El <code>id</code> se queda aunque después cambies el sector. Una
+actividad que nació en docencia sigue siendo <code>D-001</code> si la
+pasas a servicio.</p>
+</div>
+<div id="evidencias" class="section level2">
+<h2>evidencias/</h2>
+<p>Hay una subcarpeta por sector. Ahí se copia el archivo que
+adjuntas.</p>
+<p>El nombre sale de la fecha y del texto de <strong>¿Qué
+hiciste?</strong>. Cosecha lo pasa a minúsculas, quita tildes y signos,
+y cambia los espacios por guiones. El nombre del slug se corta en 60
+caracteres.</p>
+<p>Si el 12 de marzo de 2026 anotas <strong>Curso Algoritmos
+2026-1</strong> y adjuntas un PDF, el archivo queda así:</p>
+<pre class="text"><code>evidencias/docencia/2026-03-12_curso-algoritmos-2026-1.pdf</code></pre>
+<p>La frase larga vive en la columna <code>actividad</code>. El archivo
+lleva la versión corta de esa misma frase, con la fecha delante.</p>
+<p>Una tilde a veces deja un guion dentro de la palabra: <strong>Comité
+de programa</strong> queda como <code>comit-e-de-programa</code>. El
+texto completo sigue en el CSV y en el Markdown.</p>
+<p>Si ese nombre ya existe, Cosecha le agrega el id:</p>
+<pre class="text"><code>evidencias/docencia/2026-03-12_curso-algoritmos-2026-1_D-002.pdf</code></pre>
+<p>Si en vez de un archivo pegas un enlace, no se crea un archivo. En
+<code>evidencia</code> queda la URL, por ejemplo
+<code>https://doi.org/10.1000/ejemplo</code>.</p>
+<p>Al editar, un archivo nuevo reemplaza el nombre en la fila. El
+archivo anterior sigue en la carpeta. Al quitar una actividad, la fila
+sale del registro y el archivo de evidencia se queda.</p>
+</div>
+<div id="registro" class="section level2">
+<h2>registro/</h2>
+<p>Cada vez que guardas o quitas una actividad, Cosecha vuelve a
+escribir tres Markdown desde el CSV:</p>
+<table>
+<thead>
+<tr class="header">
+<th>Archivo</th>
+<th>Qué lista</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>registro/docencia.md</code></td>
+<td>Las actividades de docencia</td>
+</tr>
+<tr class="even">
+<td><code>registro/investigacion.md</code></td>
+<td>Las de investigación</td>
+</tr>
+<tr class="odd">
+<td><code>registro/servicio.md</code></td>
+<td>Las de servicio</td>
+</tr>
+</tbody>
+</table>
+<p>El nombre de estos archivos es el sector. No sale del título de la
+actividad. Dentro, cada actividad es una fila. El texto de <strong>¿Qué
+hiciste?</strong> va en la columna <strong>Actividad</strong> (en
+investigación, <strong>Producto / actividad</strong>). <strong>Por qué
+cuenta en el trienio</strong> va en <strong>Para el
+informe</strong>.</p>
+<p>La primera línea de <code>docencia.md</code> es un título fijo,
+<code># Registro — Docencia</code>. Debajo dice que el archivo se generó
+desde <code>datos/actividades.csv</code>. La próxima vez que guardes,
+Cosecha vuelve a escribir el archivo entero. Los cambios hechos a mano
+en el Markdown se pierden. El lugar para corregir una frase es la app, o
+el CSV.</p>
+<p>Las filas van de la fecha más reciente a la más antigua. Docencia y
+servicio usan esta tabla:</p>
+<pre class="text"><code>| ID | Fecha | Actividad | Rol / alcance | Evidencia | Para el informe | Notas |</code></pre>
+<p>Investigación agrega <strong>Estado</strong> después de la
+actividad.</p>
+<p>Con el ejemplo de arriba, la fila de docencia queda así:</p>
+<pre class="text"><code>| D-001 | 2026-03-12 | Curso Algoritmos 2026-1 | Profesora | [2026-03-12_curso-algoritmos-2026-1.pdf](../evidencias/docencia/2026-03-12_curso-algoritmos-2026-1.pdf) | Curso de pregrado del primer semestre. | |</code></pre>
+<p>El enlace de la evidencia apunta al archivo en
+<code>evidencias/</code>. Si la evidencia es una URL, la celda dice
+<code>[enlace](https://...)</code>. Si no hay evidencia, la celda va
+vacía.</p>
+<p>Un sector sin actividades dice: <em>Sin actividades registradas
+aún.</em></p>
+</div>
+<div id="informe-trienal" class="section level2">
+<h2>informe-trienal/</h2>
+<p><code>informe-trienal/borrador/</code> queda vacío para el texto del
+informe. Cosecha no lo llena. Los Markdown de <code>registro/</code> son
+la materia prima: de ahí se pueden copiar las frases de <strong>Para el
+informe</strong> y los enlaces a las evidencias.</p>
+</div>
+<div id="leeme.txt" class="section level2">
+<h2>LEEME.txt</h2>
+<p><code>LEEME.txt</code> es un recordatorio corto de esta misma
+estructura. Cosecha lo crea si no existe. Volver a correr
+<code>crear_carpeta()</code> no borra actividades ni evidencias: solo
+crea lo que falte.</p>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

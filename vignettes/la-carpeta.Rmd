@@ -1,0 +1,117 @@
+---
+title: "Qué hay en cada carpeta"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Qué hay en cada carpeta}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+Cosecha guarda todo en una carpeta tuya. El registro de verdad es `datos/actividades.csv`. Las otras carpetas son copias para leer, archivos que adjuntaste, o un lugar para el borrador del informe.
+
+```text
+cosecha/
+├── datos/actividades.csv
+├── evidencias/
+│   ├── docencia/
+│   ├── investigacion/
+│   └── servicio/
+├── registro/
+│   ├── docencia.md
+│   ├── investigacion.md
+│   └── servicio.md
+├── informe-trienal/borrador/
+└── LEEME.txt
+```
+
+## datos/
+
+`datos/actividades.csv` es la lista de actividades. Cada fila es una. La app lee y escribe ese archivo.
+
+| Columna | De dónde sale |
+|---|---|
+| `id` | Lo pone Cosecha: `D-001` docencia, `I-001` investigación, `S-001` servicio |
+| `rama` | El sector: `docencia`, `investigacion` o `servicio` |
+| `fecha` | La fecha del formulario |
+| `actividad` | Lo que escribiste en **¿Qué hiciste?** |
+| `rol_alcance` | **Tu rol** |
+| `estado` | El estado del producto. Solo en investigación |
+| `evidencia` | El nombre del archivo, o el enlace si pegaste una URL |
+| `para_informe` | **Por qué cuenta en el trienio** |
+| `notas` | **Notas para ti** |
+| `creado_en` | El momento en que se guardó por primera vez |
+
+El `id` se queda aunque después cambies el sector. Una actividad que nació en docencia sigue siendo `D-001` si la pasas a servicio.
+
+## evidencias/
+
+Hay una subcarpeta por sector. Ahí se copia el archivo que adjuntas.
+
+El nombre sale de la fecha y del texto de **¿Qué hiciste?**. Cosecha lo pasa a minúsculas, quita tildes y signos, y cambia los espacios por guiones. El nombre del slug se corta en 60 caracteres.
+
+Si el 12 de marzo de 2026 anotas **Curso Algoritmos 2026-1** y adjuntas un PDF, el archivo queda así:
+
+```text
+evidencias/docencia/2026-03-12_curso-algoritmos-2026-1.pdf
+```
+
+La frase larga vive en la columna `actividad`. El archivo lleva la versión corta de esa misma frase, con la fecha delante.
+
+Una tilde a veces deja un guion dentro de la palabra: **Comité de programa** queda como `comit-e-de-programa`. El texto completo sigue en el CSV y en el Markdown.
+
+Si ese nombre ya existe, Cosecha le agrega el id:
+
+```text
+evidencias/docencia/2026-03-12_curso-algoritmos-2026-1_D-002.pdf
+```
+
+Si en vez de un archivo pegas un enlace, no se crea un archivo. En `evidencia` queda la URL, por ejemplo `https://doi.org/10.1000/ejemplo`.
+
+Al editar, un archivo nuevo reemplaza el nombre en la fila. El archivo anterior sigue en la carpeta. Al quitar una actividad, la fila sale del registro y el archivo de evidencia se queda.
+
+## registro/
+
+Cada vez que guardas o quitas una actividad, Cosecha vuelve a escribir tres Markdown desde el CSV:
+
+| Archivo | Qué lista |
+|---|---|
+| `registro/docencia.md` | Las actividades de docencia |
+| `registro/investigacion.md` | Las de investigación |
+| `registro/servicio.md` | Las de servicio |
+
+El nombre de estos archivos es el sector. No sale del título de la actividad. Dentro, cada actividad es una fila. El texto de **¿Qué hiciste?** va en la columna **Actividad** (en investigación, **Producto / actividad**). **Por qué cuenta en el trienio** va en **Para el informe**.
+
+La primera línea de `docencia.md` es un título fijo, `# Registro — Docencia`. Debajo dice que el archivo se generó desde `datos/actividades.csv`. La próxima vez que guardes, Cosecha vuelve a escribir el archivo entero. Los cambios hechos a mano en el Markdown se pierden. El lugar para corregir una frase es la app, o el CSV.
+
+Las filas van de la fecha más reciente a la más antigua. Docencia y servicio usan esta tabla:
+
+```text
+| ID | Fecha | Actividad | Rol / alcance | Evidencia | Para el informe | Notas |
+```
+
+Investigación agrega **Estado** después de la actividad.
+
+Con el ejemplo de arriba, la fila de docencia queda así:
+
+```text
+| D-001 | 2026-03-12 | Curso Algoritmos 2026-1 | Profesora | [2026-03-12_curso-algoritmos-2026-1.pdf](../evidencias/docencia/2026-03-12_curso-algoritmos-2026-1.pdf) | Curso de pregrado del primer semestre. | |
+```
+
+El enlace de la evidencia apunta al archivo en `evidencias/`. Si la evidencia es una URL, la celda dice `[enlace](https://...)`. Si no hay evidencia, la celda va vacía.
+
+Un sector sin actividades dice: *Sin actividades registradas aún.*
+
+## informe-trienal/
+
+`informe-trienal/borrador/` queda vacío para el texto del informe. Cosecha no lo llena. Los Markdown de `registro/` son la materia prima: de ahí se pueden copiar las frases de **Para el informe** y los enlaces a las evidencias.
+
+## LEEME.txt
+
+`LEEME.txt` es un recordatorio corto de esta misma estructura. Cosecha lo crea si no existe. Volver a correr `crear_carpeta()` no borra actividades ni evidencias: solo crea lo que falte.

@@ -26,5 +26,8 @@ Imports:
     utils
 Suggests:
     pkgload,
-    rstudioapi
+    rstudioapi,
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
 Config/roxygen2/version: 8.1.0

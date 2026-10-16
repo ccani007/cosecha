@@ -59,6 +59,8 @@ cosecha/
 └── LEEME.txt
 ```
 
+Qué guarda cada carpeta, cómo se arman los Markdown de `registro/` y cómo el texto de la actividad pasa al nombre del archivo está en [Qué hay en cada carpeta](vignettes/la-carpeta.Rmd).
+
 En la app, la primera pregunta es **¿Dónde está tu carpeta de Cosecha?**
 
 - **Elegir carpeta** abre el Finder en Mac, o la ventana de Windows.
