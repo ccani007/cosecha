@@ -11,3 +11,6 @@
 ^evidencias$
 ^registro$
 ^informe-trienal$
+^pkgdown$
+^docs$
+^vignettes/instructive\.Rmd$

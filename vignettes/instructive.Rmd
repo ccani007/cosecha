@@ -1,0 +1,14 @@
+---
+title: "Cómo funciona"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Cómo funciona}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+Este recorrido muestra la primera vez con Cosecha: crear la carpeta y anotar una actividad.
+
+<video controls preload="metadata" width="100%" style="max-width: 960px;" src="../instructive.mp4">
+  <a href="../instructive.mp4">Ver el video</a>
+</video>

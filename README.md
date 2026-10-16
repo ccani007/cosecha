@@ -14,6 +14,14 @@ Cosecha es un paquete de R con una app para profesores de la Universidad de los 
 
 Los datos no viven en el paquete. Viven en una carpeta tuya.
 
+## Cómo funciona
+
+El video recorre la primera vez: crear la carpeta y anotar una actividad.
+
+<video controls preload="metadata" width="100%" style="max-width: 960px;" src="instructive.mp4">
+  <a href="pkgdown/assets/instructive.mp4">Ver el video</a>
+</video>
+
 | | Sector | Qué va ahí |
 |---|---|---|
 | 📚 | **Docencia** | Cursos, asesorías, materiales |

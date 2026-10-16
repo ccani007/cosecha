@@ -42,6 +42,18 @@
 <li>
   <a href="reference/index.html">Índice</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Artículos
+
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+<li>
+      <a href="articles/instructive.html">Cómo funciona</a>
+    </li>
+  </ul>
+</li>
       </ul>
 <ul class="nav navbar-nav navbar-right"></ul>
 </div>
@@ -66,7 +78,12 @@
 <img alt="R 4.1 o más" src="https://img.shields.io/badge/R-%E2%89%A5%204.1-276DC3?style=flat-square&amp;logo=r&amp;logoColor=white"><img alt="Shiny" src="https://img.shields.io/badge/app-Shiny-9A3412?style=flat-square"><img alt="Licencia MIT" src="https://img.shields.io/badge/licencia-MIT-3F6212?style=flat-square"></p>
 <p>Cosecha es un paquete de R con una app para profesores de la Universidad de los Andes. Cada actividad queda anotada, con su evidencia, para cuando llegue el momento de armar el informe trienal.</p>
 <p>Los datos no viven en el paquete. Viven en una carpeta tuya.</p>
-<table class="table">
+<div class="section level2">
+<h2 id="cómo-funciona">Cómo funciona<a class="anchor" aria-label="anchor" href="#c%C3%B3mo-funciona"></a>
+</h2>
+<p>El video recorre la primera vez: crear la carpeta y anotar una actividad.</p>
+<video controls preload="metadata" width="100%" style="max-width: 960px;" src="instructive.mp4"><a href="pkgdown/assets/instructive.mp4">Ver el video</a>
+</video><table class="table">
 <thead><tr>
 <th></th>
 <th>Sector</th>
@@ -90,6 +107,7 @@
 </tr>
 </tbody>
 </table>
+</div>
 <div class="section level2">
 <h2 id="empezar">Empezar<a class="anchor" aria-label="anchor" href="#empezar"></a>
 </h2>
@@ -122,9 +140,10 @@
 <strong>Elegir carpeta</strong> abre el Finder en Mac, o la ventana de Windows.</li>
 <li>O pegas la ruta y pulsas <strong>Usar esta carpeta</strong>.</li>
 </ul>
-<p>Esa carpeta queda con la estructura de arriba. Si ya tenía actividades, siguen ahí. La próxima apertura vuelve a la misma ruta.</p>
+<p>Si eliges un lugar (el Escritorio, Documentos, OneDrive), ahí se crea una carpeta llamada <code>cosecha</code> y adentro van <code>datos/</code>, <code>evidencias/</code>, <code>registro/</code> e <code>informe-trienal/</code>. Si eliges una carpeta que ya se llama <code>cosecha</code>, se usa esa. Si ya tenía actividades, siguen ahí. La próxima apertura vuelve a la misma ruta.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/crear_carpeta.html">crear_carpeta</a></span><span class="op">(</span><span class="st">"D:/Uniandes/cosecha"</span><span class="op">)</span>   <span class="co"># otro lugar, si lo prefieres</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="reference/crear_carpeta.html">crear_carpeta</a></span><span class="op">(</span><span class="st">"~/Desktop"</span><span class="op">)</span>             <span class="co"># crea ~/Desktop/cosecha</span></span>
+<span><span class="fu"><a href="reference/crear_carpeta.html">crear_carpeta</a></span><span class="op">(</span><span class="st">"D:/Uniandes/cosecha"</span><span class="op">)</span>   <span class="co"># la ruta ya se llama cosecha</span></span>
 <span><span class="fu"><a href="reference/data_dir.html">data_dir</a></span><span class="op">(</span><span class="op">)</span>                              <span class="co"># ver dónde guarda</span></span>
 <span><span class="fu"><a href="reference/abrir_carpeta.html">abrir_carpeta</a></span><span class="op">(</span><span class="op">)</span>                         <span class="co"># abrirla en el explorador</span></span></code></pre></div>
 </div>
